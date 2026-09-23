@@ -13,7 +13,7 @@ export const SITE = {
    * to action renders as a non-clickable "Coming to Google Play" badge instead.
    */
   playUrl: '',
-  supportEmail: 'support@example.com',
+  supportEmail: 'camlock-studio@proton.me',
   /** Shown in the footer and the privacy policy. */
   vendor: 'CamLock',
   lastUpdated: '2026-09-22',
