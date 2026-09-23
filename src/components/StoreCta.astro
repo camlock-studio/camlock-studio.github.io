@@ -1,0 +1,50 @@
+---
+import { SITE } from '../consts';
+
+/**
+ * The only place that links to the store. With no listing yet (SITE.playUrl empty)
+ * it renders a non-interactive badge, so the site can never point at a stranger's app.
+ */
+interface Props {
+  variant?: 'primary' | 'pill';
+}
+const { variant = 'primary' } = Astro.props;
+const live = SITE.playUrl.length > 0;
+const cls = variant === 'pill' ? 'pill' : 'btn btn-primary';
+---
+
+{live ? (
+  <a class={cls} href={SITE.playUrl}>Get it on Google Play</a>
+) : (
+  <span class={`${cls} soon`} role="text">Coming to Google Play</span>
+)}
+
+<style>
+  .soon {
+    cursor: default;
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    color: var(--muted);
+    box-shadow: none;
+  }
+  .soon:hover { transform: none; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 550;
+    white-space: nowrap;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .pill:hover { background: var(--surface-2); border-color: var(--brand); }
+  .pill.soon { color: var(--muted); border-style: dashed; }
+  .pill.soon:hover { background: var(--surface); border-color: var(--line); }
+</style>

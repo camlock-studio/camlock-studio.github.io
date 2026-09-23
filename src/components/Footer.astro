@@ -1,0 +1,54 @@
+---
+import Logo from './Logo.astro';
+import { SITE, url } from '../consts';
+const year = new Date().getFullYear();
+---
+<footer>
+  <div class="wrap grid">
+    <div>
+      <a class="brand" href={url('/')}><Logo size={24} /><span>{SITE.name}</span></a>
+      <p class="tag">Recognises your kids. Locks your phone. Keeps the faces on it.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href={url('/#how')}>How it works</a>
+      <a href={url('/#features')}>Features</a>
+      <a href={url('/support')}>Support</a>
+      <a href={url('/privacy')}>Privacy</a>
+      <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
+    </nav>
+  </div>
+  {/* The rule lives on an inner box: on .wrap itself it would span the gutter
+      padding and overhang the content edges by 24px each side. */}
+  <div class="wrap">
+    <div class="fine">
+      <p>© {year} {SITE.vendor}. A deterrent for shared family phones, not a tamper-proof lock.</p>
+      <p>Android and Google Play are trademarks of Google LLC.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer { border-top: 1px solid var(--line-soft); padding-block: 3rem 2.25rem; }
+  .grid { display: grid; gap: 2rem; align-items: start; }
+  @media (min-width: 46rem) { .grid { grid-template-columns: 1fr auto; } }
+  .brand {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    color: var(--text); text-decoration: none;
+    font-weight: 600; letter-spacing: -0.02em;
+  }
+  .tag { color: var(--muted); font-size: 0.925rem; margin: 0.75rem 0 0; max-width: 34ch; }
+  nav { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  nav a:hover { color: var(--text); }
+  /* Five links do not fit one phone line; a 3 + 2 grid beats leaving one alone. */
+  @media (max-width: 30rem) {
+    nav { display: grid; grid-template-columns: repeat(3, max-content); gap: 0.9rem 1.5rem; }
+  }
+  .fine {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-soft);
+    display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between;
+  }
+  .fine p { margin: 0; color: var(--dim); font-size: 0.8125rem; }
+</style>

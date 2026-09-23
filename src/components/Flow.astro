@@ -1,0 +1,165 @@
+---
+import Phone from './Phone.astro';
+
+const steps = [
+  { t: 'Enrol a face', b: 'A short scan, or a few gallery photos. Up to six children.' },
+  { t: 'Arm it once', b: 'A foreground service and a permanent notification. It survives app switching and the screen going off.' },
+  { t: 'It checks at handover', b: 'Screen on, after unlock, when another app opens. Roughly two and a half seconds each time.' },
+  { t: 'It locks. You unlock.', b: 'Calls-only screen for the child. Your fingerprint for you, and scanning pauses so you can hand it over on purpose.' },
+];
+---
+
+<div class="flow">
+  <div class="rail">
+    <div class="sticky"><Phone id="flow-phone" mode="scroll" step={0} /></div>
+  </div>
+  <ol class="steps">
+    {steps.map((s, i) => (
+      <li class="step" data-step={i}>
+        <span class="n">{String(i + 1).padStart(2, '0')}</span>
+        <h3>{s.t}</h3>
+        <p>{s.b}</p>
+        {/* Stacked, every step carries its own screen instead of sharing one
+            pinned phone. Hidden on wide screens, where the rail takes over. */}
+        <div class="shot"><Phone mode="static" step={i} /></div>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .flow { display: grid; gap: 1.5rem; }
+
+  .sticky {
+    position: sticky;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  /* ── Wide: one phone, pinned beside the steps ────────────────────────── */
+  @media (min-width: 56rem) {
+    /* No `align-items: start`: the rail has to stretch to the full row height,
+       otherwise it is exactly as tall as the phone and the sticky child has no
+       distance to travel, so it just scrolls away with the page. */
+    .flow { grid-template-columns: 0.95fr 1.05fr; gap: 4rem; }
+    .rail { order: 2; }
+    .sticky { top: 12vh; }
+    /* Scale the whole phone with zoom, stepped by screen height. Sizing its box
+       by height squeezed the frame while the screens inside are laid out in px
+       for the full 302 x 644 design, so their content overran the pinned bar.
+       Each step keeps 644 x zoom within 76% of the screen so it can stay pinned. */
+    .sticky :global(.phone) { width: 302px; zoom: 87%; }
+    .shot { display: none; }
+  }
+  @media (min-width: 56rem) and (max-height: 799px) { .sticky :global(.phone) { zoom: 76%; } }
+  @media (min-width: 56rem) and (max-height: 719px) { .sticky :global(.phone) { zoom: 66%; } }
+  @media (min-width: 56rem) and (max-height: 639px) { .sticky :global(.phone) { zoom: 56%; } }
+
+  /* ── Stacked: the screen sits under the words it belongs to ──────────── */
+  @media (max-width: 55.99rem) {
+    .rail { display: none; }
+    /* Keep the column narrow when the viewport is not: a phone centred under a
+       720px line of text leaves a lake of empty space either side. */
+    .steps { max-width: 34rem; }
+    .shot {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    /* Scale the whole phone rather than squeezing its box: the screens inside
+       are laid out in px against the 302px design width, so shrinking the frame
+       alone overflows them. `zoom` scales the layout too. */
+    .shot :global(.phone) { width: 302px; zoom: 64%; }
+  }
+
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .step {
+    padding: 2.25rem 0 2.25rem 1.6rem;
+    border-left: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .n {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--brand);
+    margin-bottom: 0.65rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h3 {
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    margin-bottom: 0.45rem;
+  }
+  .step p { color: var(--muted); margin: 0; max-width: 38ch; font-size: 1rem; }
+
+  /* Breakpoint overrides for .step live after the base rule: same specificity
+     means source order decides, and the base `padding` shorthand would
+     otherwise win over any `padding-block` set earlier in the file. */
+  @media (min-width: 56rem) {
+    /* Dim what is not being read, so the pinned phone and the live step are
+       obviously a pair. Only meaningful where one phone serves four steps. */
+    .step { padding-block: clamp(3rem, 9vh, 6rem); opacity: 0.38; transition: opacity 0.5s var(--ease); }
+    .step::before {
+      content: '';
+      position: absolute;
+      left: -1px; top: 1.6rem; bottom: 1.6rem;
+      width: 2px;
+      background: linear-gradient(var(--brand), transparent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.6s var(--ease);
+    }
+    .step.on { opacity: 1; }
+    .step.on::before { transform: scaleY(1); }
+    /* The sticky phone can only travel as far as this column is tall, so the
+       column has to outlast the last step. */
+    .steps { padding-bottom: 16vh; }
+  }
+</style>
+
+<script>
+  const phone = document.getElementById('flow-phone');
+  const steps = Array.from(document.querySelectorAll<HTMLElement>('.step'));
+
+  if (phone && steps.length) {
+    const stacked = window.matchMedia('(max-width: 55.99rem)');
+    let current = -1;
+    let queued = false;
+
+    // Which step is being read: the last one whose top has crossed the middle of
+    // the viewport. Derived from geometry on every frame rather than from
+    // observer enter/exit events, which a fast flick can deliver out of order
+    // and leave the phone showing the wrong screen.
+    const sync = () => {
+      queued = false;
+      // Stacked, every step carries its own screen, so there is nothing to track.
+      if (stacked.matches) return;
+      const line = window.innerHeight / 2;
+      let active = 0;
+      for (let i = 0; i < steps.length; i++) {
+        if (steps[i].getBoundingClientRect().top <= line) active = i;
+      }
+      if (active === current) return;
+      current = active;
+      steps.forEach((s, i) => s.classList.toggle('on', i === active));
+      phone.dataset.step = String(active);
+    };
+
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    };
+
+    sync();
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule, { passive: true });
+    stacked.addEventListener('change', () => {
+      current = -1;
+      sync();
+    });
+  }
+</script>

@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, url } from '../consts';
+---
+<Base title={`Page not found — ${SITE.name}`} description="That page does not exist.">
+  <section>
+    <div class="wrap center">
+      <p class="eyebrow">404</p>
+      <h1>That page does not exist</h1>
+      <p class="lede">The link may be old, or the address mistyped.</p>
+      <a class="btn btn-primary" href={url('/')}>Back to the homepage</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .center { text-align: center; padding-block: 3rem; }
+  .center .lede { margin-inline: auto; margin-bottom: 1.75rem; }
+</style>

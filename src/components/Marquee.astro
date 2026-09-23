@@ -1,0 +1,75 @@
+---
+const items = ['Screen on', 'After unlock', 'App switched', '30s follow-up', 'Periodic check', 'Manual check'];
+// One group is the item list repeated until it is wider than any screen (six
+// items are ~950px; three rounds, 2840px, cover a 2560px monitor). The track
+// holds two identical groups and slides by exactly one group, so the second
+// group lands where the first started and the jump back is invisible.
+const REPEAT = 3;
+const group = Array.from({ length: REPEAT }, () => items).flat();
+---
+<div class="marquee" aria-label={`Check triggers: ${items.join(', ')}`}>
+  <div class="track" aria-hidden="true">
+    {[0, 1].map(() => (
+      <div class="group">
+        {group.map((i) => (
+          <span><i></i>{i}</span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    border-block: 1px solid var(--line-soft);
+    padding-block: 1.1rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .track {
+    display: flex;
+    width: max-content;
+    /* 2840px per loop at ~43px/s, the speed it had before. */
+    animation: slide 66s linear infinite;
+    /* Keep the track on its own compositor layer for the whole loop. Otherwise
+       the untransformed first frame is drawn pixel-snapped and the moving frames
+       are not, and the restart shows as a sub-pixel twitch. */
+    will-change: transform;
+  }
+  .marquee:hover .track { animation-play-state: paused; }
+  /* -50% of a track made of two identical groups is exactly one group. */
+  @keyframes slide { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+  .group { display: flex; flex: none; }
+  /* Spacing is trailing padding on every item, not `gap`: gap only sits between
+     items, so two groups would be one gap short of twice a group and -50% would
+     land half a gap off, which is the visible jump. */
+  .group span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding-right: 3rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .group i { width: 5px; height: 5px; border-radius: 50%; background: var(--brand); flex: none; }
+</style>
+
+<script>
+  // Pad each group to a whole number of pixels. Text widths are fractional
+  // (2840.06px here), so the loop's end position was 0.06px off the pixel grid of
+  // its start: the glyphs rasterised slightly differently and shimmered at the
+  // restart. Whole-pixel groups make the first and last frame the same pixels.
+  // Re-run when the web font arrives and on resize, since both change widths.
+  const snap = () => {
+    document.querySelectorAll<HTMLElement>('.marquee .group').forEach((g) => {
+      g.style.paddingRight = '0px';
+      const w = g.getBoundingClientRect().width;
+      g.style.paddingRight = `${Math.ceil(w) - w}px`;
+    });
+  };
+  snap();
+  document.fonts?.ready.then(snap);
+  addEventListener('resize', snap, { passive: true });
+</script>

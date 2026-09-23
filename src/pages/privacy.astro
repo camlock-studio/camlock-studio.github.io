@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+---
+
+<Base title={`Privacy policy — ${SITE.name}`} description="How CamLock handles face data, permissions and the on-device event log.">
+  <section>
+    <div class="wrap prose">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy policy</h1>
+      <p class="lede">Last updated {SITE.lastUpdated}.</p>
+
+      <p>
+        CamLock is an Android app that recognises the children a parent enrols and locks the phone
+        when one of them is seen. It has no server component, no account system and no analytics.
+        This policy describes every piece of data the app handles.
+      </p>
+
+      <h2>Data CamLock collects</h2>
+      <p>
+        CamLock collects nothing about you and transmits nothing off the device. The data below is
+        created on your phone, stays on your phone, and is removed when you delete it or uninstall
+        the app.
+      </p>
+      <ul>
+        <li>
+          <strong>Face templates.</strong> When you enrol a child, the front camera or the photos
+          you pick are converted into numeric face templates. The photos and camera frames
+          themselves are not kept. Templates are encrypted with a key held in the Android Keystore
+          and cannot be converted back into an image.
+        </li>
+        <li>
+          <strong>Child profiles.</strong> The name you type, the enrolment date, and the per-child
+          options you set, such as a custom lock message or tracking-only mode.
+        </li>
+        <li>
+          <strong>Event log.</strong> Timestamped records of checks, locks, unlocks, protection
+          starting and stopping, calls allowed from the lock screen, tamper detections and
+          enrolment changes. Retention is configurable and defaults to 90 days, after which old
+          events are purged automatically.
+        </li>
+        <li><strong>Settings.</strong> Your configuration of the app.</li>
+      </ul>
+
+      <h2>Camera use</h2>
+      <p>
+        The front camera opens for roughly 2.5 seconds per check, triggered when protection starts,
+        when the screen turns on, after an unlock, when a different app comes to the front, and on
+        a follow-up shortly after each of those. Frames are processed in memory for face detection
+        and matching, then discarded. No image or video is written to storage or sent anywhere.
+        Android shows its camera privacy indicator on every check.
+      </p>
+
+      <h2>Permissions and why they are needed</h2>
+      <ul>
+        <li><strong>Camera</strong> — to run the face checks.</li>
+        <li><strong>Usage Access</strong> — to notice when a different app comes to the front, which is both a check trigger and how the lock screen is restored over apps that hide overlays.</li>
+        <li><strong>Display over other apps</strong> — to show the lock screen.</li>
+        <li><strong>Notifications</strong> — for the permanent "protection is running" notification, the reboot reminder and tamper alerts.</li>
+        <li><strong>Phone state</strong> — to stand aside while a call is ringing or active, so calls are never blocked.</li>
+        <li><strong>Ignore battery optimisations</strong> (optional) — so the system is less likely to kill protection in the background.</li>
+      </ul>
+
+      <h2>Sharing</h2>
+      <p>
+        CamLock does not share, sell or transfer any data. There are no third-party SDKs for
+        advertising, analytics or crash reporting, and the app makes no network requests of its
+        own. Face recognition uses a model bundled inside the app and runs locally.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        CamLock is used by a parent or guardian on their own phone and is not directed at children.
+        A child never uses the app; they only see the lock screen. The face data of an enrolled
+        child is created by the parent, stored encrypted on that parent's device, and removed when
+        the parent removes the child or deletes all data.
+      </p>
+
+      <h2>Your control over the data</h2>
+      <ul>
+        <li>Remove a single child, which deletes their templates and profile.</li>
+        <li>Reset a child's face samples without deleting the profile.</li>
+        <li>Export the event log as a CSV file through the system file picker.</li>
+        <li>Delete all data in one action in Settings: children, templates, events and settings.</li>
+        <li>Uninstall the app, which removes all of it.</li>
+      </ul>
+
+      <h2>Security</h2>
+      <p>
+        Face templates are encrypted with AES-GCM using a key generated in and held by the Android
+        Keystore. Opening CamLock, or returning to it from the background, requires a strong
+        biometric; the device PIN is not accepted as a fallback. The same applies to unlocking a
+        locked phone.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this policy changes, the updated version is published on this page with a new date.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy: <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose { max-width: 44rem; }
+  .prose h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); letter-spacing: -0.04em; line-height: 1.05; }
+  .prose h2 { font-size: 1.35rem; margin-top: 2.25rem; }
+  .prose ul { padding-left: 1.2rem; margin: 0 0 1em; }
+  .prose li { margin-bottom: 0.6rem; color: var(--muted); }
+  .prose li strong { color: var(--text); }
+  .prose p { color: var(--muted); }
+  .prose .lede { color: var(--muted); font-size: 1rem; }
+</style>

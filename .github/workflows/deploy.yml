@@ -1,0 +1,54 @@
+# Deploys the site to GitHub Pages on every push to main.
+#
+# This file must sit at the REPOSITORY ROOT as .github/workflows/deploy.yml.
+# It lives here so it travels with the site when this directory is moved into
+# its own repository; move it up to the root there.
+#
+# Repository setup: Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+# Then set BASE_PATH below:
+#   project site (https://<user>.github.io/<repo>/) -> BASE_PATH: /<repo>/
+#   user site or custom domain                     -> BASE_PATH: /
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  SITE_URL: https://camlock-studio.github.io
+  BASE_PATH: /
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

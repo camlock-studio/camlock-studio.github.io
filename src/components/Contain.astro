@@ -1,0 +1,60 @@
+---
+/** "Nothing leaves the device": pulses that die at the boundary. */
+---
+<div class="contain" aria-hidden="true">
+  <span class="ring" style="--i:0"></span>
+  <span class="ring" style="--i:1"></span>
+  <span class="ring" style="--i:2"></span>
+  <span class="edge"></span>
+  <div class="core">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="6" y="2" width="12" height="20" rx="3" />
+      <circle cx="12" cy="8" r="2.2" />
+      <path d="M8.5 18h7" stroke-linecap="round" />
+    </svg>
+  </div>
+</div>
+
+<style>
+  .contain {
+    position: relative;
+    width: min(320px, 80vw);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    margin-inline: auto;
+  }
+  .edge {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px dashed rgba(127, 211, 230, 0.4);
+  }
+  .ring {
+    position: absolute;
+    width: 34%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid var(--brand);
+    opacity: 0;
+    animation: out 3.6s ease-out infinite;
+    animation-delay: calc(var(--i) * 1.2s);
+  }
+  @keyframes out {
+    0% { transform: scale(0.35); opacity: 0.9; }
+    70% { opacity: 0.25; }
+    100% { transform: scale(2.9); opacity: 0; }
+  }
+  .core {
+    position: relative;
+    width: 34%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #04181d;
+    background: linear-gradient(140deg, var(--brand-2), var(--brand-deep));
+    box-shadow: 0 0 50px -8px var(--glow);
+  }
+  .core svg { width: 42%; }
+</style>

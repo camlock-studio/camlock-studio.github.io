@@ -1,0 +1,291 @@
+---
+import Base from '../layouts/Base.astro';
+import Phone from '../components/Phone.astro';
+import Flow from '../components/Flow.astro';
+import Marquee from '../components/Marquee.astro';
+import Contain from '../components/Contain.astro';
+import StoreCta from '../components/StoreCta.astro';
+import { SITE, url } from '../consts';
+
+const bento = [
+  { t: 'Calls always work', b: 'Incoming calls ring through. The lock screen has a Call button. CamLock never stands between your child and a phone.', span: 2, tone: 'hi' },
+  { t: 'Fingerprint only', b: 'Strong biometrics, no PIN fallback. Knowing the PIN buys nothing.' },
+  { t: 'The app locks itself', b: 'Opening CamLock needs your fingerprint too.' },
+  { t: 'Your words', b: 'Write what the lock screen says, per child.' },
+  { t: 'Tracking only', b: 'Record who used the phone without locking it.' },
+  { t: 'Every lock, logged', b: 'Locks per day, time locked, per-child totals, CSV export.', span: 2 },
+  { t: 'Tamper alerts', b: 'A notification the moment protection stops.' },
+];
+
+const limits = [
+  { t: 'Not tamper-proof', b: 'Any Android app can be force-stopped. CamLock detects it and tells you, instead of pretending otherwise.' },
+  { t: 'Not identity proof', b: 'Android accepts any enrolled fingerprint. Keep enrolment to people you trust.' },
+  { t: 'Not self-starting', b: 'Android blocks background camera starts. After a reboot, one tap on a notification.' },
+];
+
+const faqs = [
+  { q: 'Does any face data leave the phone?', a: 'No. Matching runs on-device against an encrypted template that cannot be turned back into a photo. There is no server, no account and no analytics.' },
+  { q: 'What about other adults?', a: 'Only enrolled faces trigger a lock. A partner or grandparent picking up the phone changes nothing.' },
+  { q: 'Siblings who look alike?', a: 'Three sensitivity presets, plus two-frame confirmation. Add more samples if a sibling trips it.' },
+  { q: 'What does it cost in battery?', a: 'About 2.5 seconds of camera per check, 20 to 40 checks a day, targeted under 3 percent.' },
+  { q: 'Which phones?', a: 'Android 8.0 and up, with a front camera and an enrolled fingerprint. It runs on the parent phone.' },
+];
+---
+
+<Base title={`${SITE.name} — ${SITE.tagline}`}>
+  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1 class="display lines reveal">
+          <span>They know the PIN.</span>
+          <em>The phone knows their face.</em>
+        </h1>
+        <p class="lede reveal" style="--d:160ms">
+          CamLock recognises the kids you enrolled on the front camera and locks the
+          phone behind a calls-only screen. Your fingerprint is the way out.
+        </p>
+        <div class="cta reveal" style="--d:240ms">
+          {/* While there is no store listing the badge cannot be the primary
+              action, so the one live action takes the primary slot and style. */}
+          {SITE.playUrl ? (
+            <>
+              <StoreCta />
+              <a class="btn btn-ghost" href="#how">Watch it work</a>
+            </>
+          ) : (
+            <>
+              <a class="btn btn-primary" href="#how">Watch it work</a>
+              <StoreCta />
+            </>
+          )}
+        </div>
+      </div>
+      <div class="hero-art reveal" style="--d:120ms">
+        <Phone mode="loop" step={1} tilt />
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  <!-- ── How it works ─────────────────────────────────────────────── -->
+  <section id="how">
+    <div class="wrap">
+      <header class="head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2 class="lines"><span>Four steps.</span> <span>Then you forget it is there.</span></h2>
+      </header>
+      <Flow />
+    </div>
+  </section>
+
+  <!-- ── Features ─────────────────────────────────────────────────── -->
+  <section id="features">
+    <div class="wrap">
+      <header class="head reveal">
+        <p class="eyebrow">What you get</p>
+        <h2>All of it, from the first launch.</h2>
+        <p class="lede">No tiers. No trial timer. Nothing to unlock later.</p>
+      </header>
+      <div class="bento">
+        {bento.map((c, i) => (
+          <article
+            class:list={['card', 'cell', 'reveal', c.span === 2 && 'wide', c.tone === 'hi' && 'hi']}
+            style={`--d:${i * 60}ms`}
+          >
+            <h3>{c.t}</h3>
+            <p>{c.b}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Privacy ──────────────────────────────────────────────────── -->
+  <section id="privacy" class="band">
+    <div class="wrap privacy">
+      <div class="reveal">
+        <p class="eyebrow">Privacy</p>
+        <h2>Nothing leaves the phone.</h2>
+        <p class="lede">
+          A face becomes a number, encrypted by the Android Keystore, matched locally.
+          No account. No cloud. No analytics. One tap wipes all of it.
+        </p>
+        <p><a href={url('/privacy')}>Read the privacy policy →</a></p>
+      </div>
+      <div class="reveal" style="--d:120ms"><Contain /></div>
+    </div>
+  </section>
+
+  <!-- ── Honest limits ────────────────────────────────────────────── -->
+  <section>
+    <div class="wrap">
+      <header class="head reveal">
+        <p class="eyebrow">Honest limits</p>
+        <h2>What it cannot do.</h2>
+        <p class="lede">A deterrent that keeps a record, not a jail. Worth knowing before you buy.</p>
+      </header>
+      <div class="limits">
+        {limits.map((l, i) => (
+          <div class="limit reveal" style={`--d:${i * 80}ms`}>
+            <h3>{l.t}</h3>
+            <p>{l.b}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────── -->
+  <section id="faq" class="band">
+    <div class="wrap faqwrap">
+      <header class="reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2>Short answers.</h2>
+      </header>
+      <div class="faq reveal" style="--d:100ms">
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Final ────────────────────────────────────────────────────── -->
+  <section id="get" class="final">
+    <div class="wrap reveal">
+      <h2 class="lines"><span>Hand over the phone.</span> <span>Not everything on it.</span></h2>
+      <StoreCta />
+      <p class="fine">One purchase. Every feature. Nothing transmitted.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Hero ── */
+  .hero { padding-block: clamp(3rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem); }
+  .hero-grid { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 58rem) {
+    .hero-grid { grid-template-columns: 1.08fr 0.92fr; gap: 4rem; }
+    /* Content starts just under the header, with padding that follows screen
+       height, and the hero is as tall as its content. Centring it in a full
+       screen spread the leftover height evenly, which always left an empty
+       band above the headline (365px of it on a 1440px-tall monitor). The
+       phone and headline are both sized to fit the screen, so nothing needs
+       the extra height to stay visible. */
+    .hero { padding-block: clamp(1.5rem, 6svh, 5rem) clamp(2.5rem, 8svh, 6rem); }
+  }
+  /* The phone is laid out in px against its 302x644 design size, so it scales
+     with zoom, stepped by screen height to fit inside the hero's 2rem padding. */
+  /* Each step fits 644px x zoom inside (screen height - 160px) at its lower bound. */
+  @media (min-width: 58rem) and (max-height: 799px) {
+    .hero-art :global(.phone) { width: 302px; zoom: 86%; }
+  }
+  @media (min-width: 58rem) and (max-height: 719px) {
+    .hero-art :global(.phone) { zoom: 74%; }
+  }
+  @media (min-width: 58rem) and (max-height: 639px) {
+    .hero-art :global(.phone) { zoom: 62%; }
+  }
+  @media (min-width: 58rem) and (max-height: 559px) {
+    .hero-art :global(.phone) { zoom: 50%; }
+  }
+  /* Grid items default to min-width: auto, which lets any wide child stretch the
+     column past the viewport. */
+  .hero-copy { min-width: 0; container-type: inline-size; }
+  /* Vanishing point off to the right: the phone is turned to face the headline,
+     so its right side is the one we see, and a right-hand origin makes the
+     perspective widen that side edge instead of shrinking it back. */
+  .hero-art { display: flex; justify-content: center; min-width: 0; perspective: 1600px; perspective-origin: 140% 50%; }
+  /* At full size the hero phone is taller than a phone screen, so the page opens
+     with a screenful of mockup. Scale it the way the flow phone is scaled. */
+  @media (max-width: 47.99rem) {
+    .hero-art :global(.phone) { width: 302px; zoom: 62%; }
+  }
+
+  .display em {
+    font-style: normal;
+    background: linear-gradient(180deg, #d7f4fb, var(--brand) 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  @media (max-width: 30rem) {
+    .cta { display: grid; }
+  }
+
+  /* ── Section heads ── */
+  .head { margin-bottom: clamp(2.5rem, 5vw, 4rem); max-width: 42rem; }
+  .head .lede { margin-top: 1rem; }
+  .band {
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.022) 18%, rgba(255, 255, 255, 0.022) 82%, transparent);
+  }
+
+  /* ── Bento ── */
+  .bento { display: grid; gap: 0.9rem; grid-template-columns: 1fr; }
+  @media (min-width: 40rem) { .bento { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 62rem) { .bento { grid-template-columns: repeat(3, 1fr); } }
+  .cell { padding: 1.7rem; }
+  @media (min-width: 40rem) { .wide { grid-column: span 2; } }
+  .hi {
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(36, 93, 107, 0.55), transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+    border-color: var(--line);
+  }
+  .hi h3 { font-size: 1.35rem; letter-spacing: -0.025em; }
+  .hi p { font-size: 1rem; max-width: 34ch; }
+
+  /* ── Limits ── */
+  .limits { display: grid; gap: 1.6rem; }
+  @media (min-width: 52rem) { .limits { grid-template-columns: repeat(3, 1fr); gap: 2.4rem; } }
+  .limit { border-top: 1px solid var(--line-soft); padding-top: 1.3rem; }
+  .limit h3 { color: var(--brand); margin-bottom: 0.5rem; }
+  .limit p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+
+  /* ── FAQ ── */
+  .faqwrap { display: grid; gap: 2rem; align-items: start; }
+  @media (min-width: 56rem) { .faqwrap { grid-template-columns: 0.75fr 1.25fr; gap: 4rem; } }
+  .faq details { border-bottom: 1px solid var(--line-soft); }
+  .faq details:first-child { border-top: 1px solid var(--line-soft); }
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.15rem 0;
+    font-size: 1.05rem;
+    font-weight: 550;
+    letter-spacing: -0.015em;
+    transition: color 0.2s;
+  }
+  .faq summary:hover { color: var(--brand); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: '';
+    flex: none;
+    width: 11px; height: 11px;
+    border-right: 1.5px solid var(--brand);
+    border-bottom: 1.5px solid var(--brand);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform 0.3s var(--ease);
+  }
+  .faq details[open] summary::after { transform: rotate(225deg) translate(-2px, -2px); }
+  .faq p { color: var(--muted); margin: -0.25rem 0 1.3rem; max-width: 58ch; font-size: 0.975rem; }
+
+  /* ── Privacy ── */
+  .privacy { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 56rem) { .privacy { grid-template-columns: 1.05fr 0.95fr; gap: 4rem; } }
+
+  /* ── Final ── */
+  .final { text-align: center; padding-bottom: clamp(5rem, 12vw, 9rem); }
+  .final h2 { margin-bottom: 2rem; }
+  .fine { color: var(--dim); font-size: 0.875rem; margin: 1.25rem 0 0; }
+</style>

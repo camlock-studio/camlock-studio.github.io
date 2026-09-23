@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, url } from '../consts';
+---
+
+<Base title={`Support — ${SITE.name}`} description="Setup help and troubleshooting for CamLock.">
+  <section>
+    <div class="wrap prose">
+      <p class="eyebrow">Help</p>
+      <h1>Support</h1>
+      <p class="lede">
+        Email <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>. Include your phone
+        model and Android version; it is usually enough to reproduce the problem.
+      </p>
+
+      <h2>Protection keeps stopping on its own</h2>
+      <p>
+        Some manufacturers kill background services aggressively. In CamLock's Settings, grant the
+        battery exemption, and in Android Settings allow CamLock to run unrestricted. CamLock posts
+        a tamper alert whenever protection dies without you stopping it, so you will know.
+      </p>
+
+      <h2>My child is not recognised</h2>
+      <p>
+        Add more face samples from a second angle and in different light: open the child, then
+        "Add more face samples". If that does not help, move the sensitivity preset to lenient.
+      </p>
+
+      <h2>The phone locks for the wrong person</h2>
+      <p>
+        Siblings and parent-child resemblance are the known cause. Move the sensitivity preset to
+        strict, and re-enrol the affected child with clear, well-lit samples.
+      </p>
+
+      <h2>It does not lock after a reboot</h2>
+      <p>
+        Android does not allow a camera service to start in the background. CamLock posts a
+        notification after a reboot; tapping it starts protection again.
+      </p>
+
+      <h2>I cannot get into the app</h2>
+      <p>
+        CamLock requires a strong biometric, with no PIN fallback. If your fingerprint is not
+        recognised, or none is enrolled, enrol one in Android Settings and reopen the app.
+      </p>
+
+      <h2>Delete everything</h2>
+      <p>
+        Settings has "Delete all data": children, face templates, the event log and your settings.
+        Uninstalling removes the same data.
+      </p>
+
+      <p><a href={url('/privacy')}>Privacy policy</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose { max-width: 44rem; }
+  .prose h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); letter-spacing: -0.04em; line-height: 1.05; }
+  .prose h2 { font-size: 1.35rem; margin-top: 2.25rem; }
+  .prose p { color: var(--muted); }
+  .prose .lede { font-size: 1.05rem; }
+</style>

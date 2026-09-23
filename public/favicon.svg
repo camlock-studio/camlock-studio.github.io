@@ -1,0 +1,32 @@
+<!-- Generated from docs/icon.svg by scripts/make-app-icon.sh. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72">
+  <defs>
+    <clipPath id="tile"><rect x="18" y="18" width="72" height="72" rx="16"/></clipPath>
+    <linearGradient id="canvas" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C1B1F"/>
+      <stop offset="0.55" stop-color="#071012"/>
+      <stop offset="1" stop-color="#040A0B"/>
+    </linearGradient>
+    <radialGradient id="wash" cx="54" cy="-4" r="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#245D6B" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#245D6B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="54" cy="54" r="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7FD3E6" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#7FD3E6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g clip-path="url(#tile)">
+  <g id="background">
+    <rect width="108" height="108" fill="url(#canvas)"/>
+    <rect width="108" height="108" fill="url(#wash)"/>
+  </g>
+  <g id="foreground">
+    <circle cx="54" cy="54" r="46" fill="url(#halo)"/>
+    <circle cx="54" cy="54" r="29.4" fill="none" stroke="#7FD3E6" stroke-opacity="0.42" stroke-width="2.2"/>
+    <circle cx="54" cy="54" r="20.3" fill="none" stroke="#7FD3E6" stroke-opacity="0.72" stroke-width="2"/>
+    <circle cx="54" cy="54" r="12.6" fill="#7FD3E6" fill-opacity="0.16"/>
+    <path fill="#A8E6F2" d="M54,44.9a6.3,6.3 0 0,1 2.94,11.9L58.2,63.8H49.8L51.06,56.8a6.3,6.3 0 0,1 2.94,-11.9z"/>
+  </g>
+</g>
+</svg>
