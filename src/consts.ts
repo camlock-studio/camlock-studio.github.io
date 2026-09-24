@@ -16,7 +16,7 @@ export const SITE = {
   supportEmail: 'camlock-studio@proton.me',
   /** Shown in the footer and the privacy policy. */
   vendor: 'CamLock',
-  lastUpdated: '2026-09-22',
+  lastUpdated: '2026-09-24',
 } as const;
 
 /** Prefix an internal path with Astro's configured base, so project-page URLs work. */
