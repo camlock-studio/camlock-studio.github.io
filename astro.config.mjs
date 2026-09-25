@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // GitHub Pages serves a project site from https://<user>.github.io/<repo>/, so the
 // build needs a base path. Both values come from the environment, which keeps this
@@ -11,4 +12,5 @@ export default defineConfig({
   base: process.env.BASE_PATH ?? '/',
   trailingSlash: 'ignore',
   build: { format: 'directory' },
+  integrations: [sitemap()],
 });
