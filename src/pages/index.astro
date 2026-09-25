@@ -8,26 +8,26 @@ import StoreCta from '../components/StoreCta.astro';
 import { SITE, url } from '../consts';
 
 const bento = [
-  { t: 'Calls always work', b: 'Incoming calls ring through. The lock screen has a Call button. CamLock never stands between your child and a phone.', span: 2, tone: 'hi' },
-  { t: 'Fingerprint only', b: 'Strong biometrics, no PIN fallback. Knowing the PIN buys nothing.' },
+  { t: 'Call controls on the lock screen', b: 'A Call button opens the dialler. CamLock is designed to stand aside when Android reports a ringing or active call.', span: 2, tone: 'hi' },
+  { t: 'Fingerprint only', b: 'Strong biometrics, with no PIN fallback inside CamLock.' },
   { t: 'The app locks itself', b: 'Opening CamLock needs your fingerprint too.' },
   { t: 'Your words', b: 'Write what the lock screen says, per child.' },
   { t: 'Tracking only', b: 'Record who used the phone without locking it.' },
   { t: 'Every lock, logged', b: 'Locks per day, time locked, per-child totals, CSV export.', span: 2 },
-  { t: 'Tamper alerts', b: 'A notification the moment protection stops.' },
+  { t: 'Tamper alerts', b: 'Alerts when CamLock detects interrupted protection. Delivery depends on Android and notification access.' },
 ];
 
 const limits = [
-  { t: 'Not tamper-proof', b: 'Any Android app can be force-stopped. CamLock detects it and tells you, instead of pretending otherwise.' },
-  { t: 'Not identity proof', b: 'Android accepts any enrolled fingerprint. Keep enrolment to people you trust.' },
-  { t: 'Not self-starting', b: 'Android blocks background camera starts. After a reboot, one tap on a notification.' },
+  { t: 'Not tamper-proof', b: 'Any Android app can be force-stopped. CamLock can report an unexpected stop when it next runs.' },
+  { t: 'Not identity proof', b: 'Android accepts any enrolled fingerprint. A person who knows the device PIN may add another; keep device credentials private.' },
+  { t: 'Not self-starting', b: 'After a reboot, tap the reminder and authenticate. Protection can restart once its required access is ready.' },
 ];
 
 const faqs = [
-  { q: 'Does any face data leave the phone?', a: 'No. Matching runs on-device against an encrypted template that cannot be turned back into a photo. There is no server, no account and no analytics.' },
-  { q: 'What about other adults?', a: 'Only enrolled faces trigger a lock. A partner or grandparent picking up the phone changes nothing.' },
-  { q: 'Siblings who look alike?', a: 'Three sensitivity presets, plus two-frame confirmation. Add more samples if a sibling trips it.' },
-  { q: 'What does it cost in battery?', a: 'About 2.5 seconds of camera per check, 20 to 40 checks a day, targeted under 3 percent.' },
+  { q: 'Does any face data leave the phone?', a: 'CamLock processes camera frames and face templates on the phone and does not upload them. Templates are encrypted biometric measurements, not saved photos. History is separate: you can export it to a destination you choose.' },
+  { q: 'What about other adults?', a: 'CamLock tries to match only the children you enrolled. Recognition can make mistakes, especially with similar faces; check it with your household and adjust the sensitivity if needed.' },
+  { q: 'Siblings who look alike?', a: 'Similar faces can be confused. Three sensitivity presets and additional samples help you adjust recognition, but reliable separation of siblings is not guaranteed.' },
+  { q: 'What does it cost in battery?', a: 'Each check briefly uses the front camera. Battery use depends on your phone, settings and how often checks run; we do not promise a fixed percentage.' },
   { q: 'Which phones?', a: 'Android 8.0 and up, with a front camera and an enrolled fingerprint. It runs on the parent phone.' },
 ];
 ---
@@ -107,10 +107,10 @@ const faqs = [
     <div class="wrap privacy">
       <div class="reveal">
         <p class="eyebrow">Privacy</p>
-        <h2>Nothing leaves the phone.</h2>
+        <h2>Face checks stay on your phone.</h2>
         <p class="lede">
-          A face becomes a number, encrypted by the Android Keystore, matched locally.
-          No account. No cloud. No analytics. One tap wipes all of it.
+          Face templates are encrypted and matched locally. No app account, ads or analytics.
+          You control history exports; copies saved elsewhere must be deleted separately.
         </p>
         <p><a href={url('/privacy')}>Read the privacy policy →</a></p>
       </div>
@@ -160,7 +160,7 @@ const faqs = [
     <div class="wrap reveal">
       <h2 class="lines"><span>Hand over the phone.</span> <span>Not everything on it.</span></h2>
       <StoreCta />
-      <p class="fine">One purchase. Every feature. Nothing transmitted.</p>
+      <p class="fine">One purchase. Every feature. Face matching on your phone.</p>
     </div>
   </section>
 </Base>

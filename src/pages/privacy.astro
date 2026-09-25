@@ -1,107 +1,191 @@
 ---
 import Base from '../layouts/Base.astro';
+import OperatorDetails from '../components/OperatorDetails.astro';
 import { SITE } from '../consts';
 ---
 
-<Base title={`Privacy policy — ${SITE.name}`} description="How CamLock handles face data, permissions and the on-device event log.">
+<Base title={`Privacy policy — ${SITE.name}`} description="How CamLock handles local face data, history exports, website visits and support enquiries.">
   <section>
     <div class="wrap prose">
-      <p class="eyebrow">Legal</p>
+      <p class="eyebrow">Privacy</p>
       <h1>Privacy policy</h1>
       <p class="lede">Last updated {SITE.lastUpdated}.</p>
 
       <p>
-        CamLock is an Android app that recognises the children a parent enrols and locks the phone
-        when one of them is seen. It has no server component, no account system and no analytics.
-        This policy describes every piece of data the app handles.
+        CamLock is for parents or guardians using their own Android phone. It processes enrolled
+        children's face data on that phone to decide when to show a lock screen. Local processing
+        still involves personal and biometric data. This policy explains that processing, the
+        history files you can export, and the separate information involved when you visit this
+        website or contact support.
       </p>
 
-      <h2>Data CamLock collects</h2>
+      <h2>Who to contact</h2>
+      <OperatorDetails />
       <p>
-        CamLock collects nothing about you and transmits nothing off the device. The data below is
-        created on your phone, stays on your phone, and is removed when you delete it or uninstall
-        the app.
+        Contact the CamLock developer about the app, this website or a privacy request at{' '}
+        <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
+        The app has no user accounts or developer-operated service that receives its face checks.
       </p>
+
+      <h2>Data processed on your phone</h2>
       <ul>
         <li>
-          <strong>Face templates.</strong> When you enrol a child, the front camera or the photos
-          you pick are converted into numeric face templates. The photos and camera frames
-          themselves are not kept. Templates are encrypted with a key held in the Android Keystore
-          and cannot be converted back into an image.
+          <strong>Face templates.</strong> During enrolment, CamLock turns camera frames or photos
+          you select into numeric measurements used for matching. Saved templates are encrypted
+          with an Android Keystore key. They are sensitive biometric data, not anonymous data;
+          encryption is not a guarantee against every form of misuse or reconstruction.
         </li>
         <li>
-          <strong>Child profiles.</strong> The name you type, the enrolment date, and the per-child
-          options you set, such as a custom lock message or tracking-only mode.
+          <strong>Child profiles.</strong> A name you enter, an app-generated identifier,
+          enrolment and update dates, face templates, and options such as an enabled profile,
+          tracking-only mode or a custom lock message. Profiles and templates are stored together
+          in an encrypted app-private file.
         </li>
         <li>
-          <strong>Event log.</strong> Timestamped records of checks, locks, unlocks, protection
-          starting and stopping, calls allowed from the lock screen, tamper detections and
-          enrolment changes. Retention is configurable and defaults to 90 days, after which old
-          events are purged automatically.
+          <strong>Activity history.</strong> Records can include time, event type, child name and
+          identifier, the reason for a check or lock, match similarity, frame count and trigger
+          source. Events include checks, locks, unlocks, protection changes, call access, tamper
+          detections and profile changes. History is kept in an app-private database, separate
+          from the encrypted profile file.
         </li>
-        <li><strong>Settings.</strong> Your configuration of the app.</li>
+        <li>
+          <strong>Settings and diagnostics.</strong> Your preferences and local status information
+          help CamLock operate and show you problems. These are not sent to an analytics or crash
+          reporting service by the app. Android diagnostic logs can include foreground app package
+          names and protection events. Android controls those logs separately from the app's history.
+        </li>
       </ul>
-
-      <h2>Camera use</h2>
       <p>
-        The front camera opens for roughly 2.5 seconds per check, triggered when protection starts,
-        when the screen turns on, after an unlock, when a different app comes to the front, and on
-        a follow-up shortly after each of those. Frames are processed in memory for face detection
-        and matching, then discarded. No image or video is written to storage or sent anywhere.
-        Android shows its camera privacy indicator on every check.
+        The current app has no internet permission, advertising SDK, analytics SDK or remote
+        crash-reporting SDK. Its face detection and matching models run locally. Android backup
+        and device-transfer backup are disabled for the app's stored data.
       </p>
 
-      <h2>Permissions and why they are needed</h2>
+      <h2>Camera and selected photos</h2>
+      <p>
+        With protection enabled, a check briefly uses the front camera, typically for about
+        2.5 seconds. Checks can be triggered by starting protection, screen or unlock events,
+        an app switch, a follow-up or a scheduled check, depending on your settings. CamLock
+        processes the frames in memory and does not save camera photos or video. Supported
+        Android versions display their camera-use indicator.
+      </p>
+      <p>
+        Photos selected for enrolment are read to create templates; CamLock does not keep a copy
+        of the selected images. The originals remain in your gallery or chosen photo service
+        and are not deleted by CamLock. Any syncing of those originals is controlled by that service.
+      </p>
+
+      <h2>Permissions and access</h2>
       <ul>
-        <li><strong>Camera</strong> — to run the face checks.</li>
-        <li><strong>Usage Access</strong> — to notice when a different app comes to the front, which is both a check trigger and how the lock screen is restored over apps that hide overlays.</li>
-        <li><strong>Display over other apps</strong> — to show the lock screen.</li>
-        <li><strong>Notifications</strong> — for the permanent "protection is running" notification, the reboot reminder and tamper alerts.</li>
-        <li><strong>Phone state</strong> — to stand aside while a call is ringing or active, so calls are never blocked.</li>
-        <li><strong>Battery</strong> (optional, not a permission) — CamLock only opens Android's battery optimisation list, where you can turn optimisation off for CamLock so the system is less likely to stop protection in the background.</li>
+        <li><strong>Camera</strong> — enrolment and face checks.</li>
+        <li><strong>Usage Access</strong> — notice the foreground app and restore the lock over apps that hide overlays. It does not read screen contents or browser history; foreground app identifiers can appear in local diagnostic logs.</li>
+        <li><strong>Display over other apps</strong> — show the child-facing lock screen.</li>
+        <li><strong>Notifications</strong> — show protection status, reboot reminders, tamper alerts and optional daily summaries.</li>
+        <li><strong>Phone state</strong> — respond to Android's ringing or active-call status. CamLock does not read phone numbers or call recordings.</li>
+        <li><strong>Biometrics</strong> — ask Android to authenticate the parent. CamLock receives the authentication result, not your fingerprint data.</li>
+        <li><strong>Battery settings</strong> — optionally open Android's battery optimisation settings. This is not a battery-exemption permission requested by the app.</li>
       </ul>
 
-      <h2>Sharing</h2>
+      <h2>History exports and other apps</h2>
       <p>
-        CamLock does not share, sell or transfer any data. There are no third-party SDKs for
-        advertising, analytics or crash reporting, and the app makes no network requests of its
-        own. Face recognition uses a model bundled inside the app and runs locally.
+        Exporting history is optional and starts only when you choose it. CamLock writes a CSV
+        through Android's file picker to the destination you select. It can contain timestamps,
+        child names and identifiers, event types, reasons, similarity scores, frame counts and
+        trigger sources. It does not contain photos or face templates. The CSV is plain text,
+        not encrypted by CamLock.
+      </p>
+      <p>
+        The picker may offer local storage or a cloud provider. Choosing a cloud destination can
+        send the file off the phone through that provider, under its own privacy and retention
+        rules. Choose a destination you trust and restrict who can access the file. Copies you
+        later share are also outside CamLock's control.
+      </p>
+      <p>
+        Opening a support email or a website link launches another app. Your email provider,
+        browser and the destination service handle that interaction under their own policies.
+        CamLock does not automatically attach profiles, face templates or history to a support email.
       </p>
 
-      <h2>Children</h2>
-      <p>
-        CamLock is used by a parent or guardian on their own phone and is not directed at children.
-        A child never uses the app; they only see the lock screen. The face data of an enrolled
-        child is created by the parent, stored encrypted on that parent's device, and removed when
-        the parent removes the child or deletes all data.
-      </p>
-
-      <h2>Your control over the data</h2>
+      <h2>Retention and deletion</h2>
       <ul>
-        <li>Remove a single child, which deletes their templates and profile.</li>
-        <li>Reset a child's face samples without deleting the profile.</li>
-        <li>Export the event log as a CSV file through the system file picker.</li>
-        <li>Delete all data in one action in Settings: children, templates, events and settings.</li>
-        <li>Uninstall the app, which removes all of it.</li>
+        <li><strong>Remove a child</strong> deletes the saved profile and templates. Earlier history can still contain that child's name and identifier, including the removal event.</li>
+        <li><strong>Reset face samples</strong> removes a child's templates while keeping their profile. Earlier history remains.</li>
+        <li><strong>History retention</strong> defaults to 90 days and is configurable. Cleanup is scheduled daily but depends on Android allowing it to run, so older entries may remain until the next successful cleanup.</li>
+        <li><strong>Delete history</strong> clears the app's recorded history while keeping profiles and settings.</li>
+        <li><strong>Delete all data</strong> in Settings stops protection and clears the app's profiles, templates, history and settings when the operation completes successfully.</li>
+        <li><strong>Uninstalling</strong> removes CamLock's app-private data.</li>
       </ul>
-
-      <h2>Security</h2>
       <p>
-        Face templates are encrypted with AES-GCM using a key generated in and held by the Android
-        Keystore. Opening CamLock, or returning to it from the background, requires a strong
-        biometric; the device PIN is not accepted as a fallback. The same applies to unlocking a
-        locked phone.
+        Deleting data in CamLock or uninstalling does not delete exported CSV files, copies held by
+        other people or cloud providers, original gallery photos, or emails sent to support.
+        Delete those separately at their destination. We cannot remotely access or erase the
+        app-private records on your phone.
+      </p>
+
+      <h2>Children and biometric information</h2>
+      <p>
+        CamLock is intended for adults managing their own phone, not as an app for children to
+        administer. Only enrol children for whom you are responsible and explain the face checks
+        in a way they can understand. CamLock does not upload their face templates or camera
+        frames to the developer. Face recognition can make mistakes, especially with similar
+        faces; it is not proof of identity.
+      </p>
+
+      <h2>This website</h2>
+      <p>
+        The website is hosted on GitHub Pages. Your browser sends technical information to the
+        host when it requests pages and files. GitHub records visitors' IP addresses for security,
+        including when visitors are not signed into GitHub. See{' '}
+        <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">GitHub Pages data collection</a>{' '}
+        and the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>
+        for its handling, retention and international-transfer information.
+      </p>
+      <p>
+        We have not added analytics, advertising trackers, tracking cookies or external font
+        requests to this website. Fonts come from your device. Links to other services are opened
+        only when you follow them; their privacy policies then apply.
+      </p>
+
+      <h2>Support and privacy enquiries</h2>
+      <p>
+        If you email us, we receive your email address, message and any attachments you choose to
+        send, such as your phone model, Android version or a description of a problem. Please do
+        not send children's photographs, face templates, ID documents or unredacted history.
+        We use the information to answer your request, troubleshoot, handle complaints and protect
+        the service. We do not sell it or use support messages for advertising.
+      </p>
+      <p>
+        We use Proton Mail for the support mailbox. Email is handled by Proton and your own mail
+        provider; see <a href="https://proton.me/mail/privacy-policy">Proton Mail's privacy policy</a>.
+        A normal support email should not be assumed to have end-to-end encryption between every
+        provider. Send only what is needed for your request.
+      </p>
+      <p>
+        Where European data-protection law applies, ordinary support processing is based on our
+        legitimate interest in answering enquiries and keeping the service working, or on handling
+        your contract where the request concerns it. We retain correspondence while needed to
+        resolve the request and related follow-up, and longer only when required for a legal
+        obligation or a dispute. The reason and applicable obligation determine that period.
+      </p>
+
+      <h2>Your rights and security</h2>
+      <p>
+        Depending on the applicable law, you may request access, correction, deletion, restriction
+        or portability of information we hold, and object to processing based on legitimate
+        interests. Contact the email above. These requests concern information we hold, such as
+        correspondence; use the app controls for records stored only on your phone. You can also
+        complain to your local data-protection authority, including{' '}
+        <a href="https://azop.hr/prava-ispitanika/">AZOP in Croatia</a>.
+      </p>
+      <p>
+        Saved profiles and face templates use AES-GCM encryption with an Android Keystore key.
+        Opening the app and dismissing its lock require a strong Android biometric with no device
+        PIN fallback. Keep your phone and account access secure: app-private storage, encryption
+        and biometrics cannot guarantee protection against every attack.
       </p>
 
       <h2>Changes</h2>
-      <p>
-        If this policy changes, the updated version is published on this page with a new date.
-      </p>
-
-      <h2>Contact</h2>
-      <p>
-        Questions about this policy: <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
-      </p>
+      <p>We will publish changes on this page and update the date above when these practices change.</p>
     </div>
   </section>
 </Base>

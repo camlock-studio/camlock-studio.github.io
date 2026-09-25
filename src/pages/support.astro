@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE, url } from '../consts';
+import OperatorDetails from '../components/OperatorDetails.astro';
 ---
 
 <Base title={`Support — ${SITE.name}`} description="Setup help and troubleshooting for CamLock.">
@@ -10,7 +11,8 @@ import { SITE, url } from '../consts';
       <h1>Support</h1>
       <p class="lede">
         Email <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>. Include your phone
-        model and Android version; it is usually enough to reproduce the problem.
+        model, Android version, app version and what happened. Please omit children’s photos,
+        face templates, ID documents and unredacted history.
       </p>
 
       <h2>Protection keeps stopping on its own</h2>
@@ -18,8 +20,8 @@ import { SITE, url } from '../consts';
         Some manufacturers kill background services aggressively. In CamLock, open Settings >
         Permissions and access, tap Open on the Battery row, pick CamLock in Android's list and turn
         optimisation off. On Samsung and Xiaomi, also allow CamLock to run unrestricted in its app
-        battery settings. CamLock posts
-        a tamper alert whenever protection dies without you stopping it, so you will know.
+        battery settings. CamLock can report an unexpected stop when it next runs. Alert delivery depends on Android
+        and notification access; it cannot send an immediate alert while force-stopped.
       </p>
 
       <h2>My child is not recognised</h2>
@@ -30,14 +32,15 @@ import { SITE, url } from '../consts';
 
       <h2>The phone locks for the wrong person</h2>
       <p>
-        Siblings and parent-child resemblance are the known cause. Move the sensitivity preset to
+        Similar faces, lighting and camera angle can cause mistaken matches. Move the sensitivity preset to
         strict, and re-enrol the affected child with clear, well-lit samples.
       </p>
 
       <h2>It does not lock after a reboot</h2>
       <p>
         Android does not allow a camera service to start in the background. CamLock posts a
-        notification after a reboot; tapping it starts protection again.
+        reminder after a reboot. Tap it and authenticate with your biometric; protection can restart
+        once the required permissions and access are ready.
       </p>
 
       <h2>I cannot get into the app</h2>
@@ -46,13 +49,30 @@ import { SITE, url } from '../consts';
         recognised, or none is enrolled, enrol one in Android Settings and reopen the app.
       </p>
 
-      <h2>Delete everything</h2>
+      <h2>Delete app data and exported files</h2>
       <p>
-        Settings has "Delete all data": children, face templates, the event log and your settings.
-        Uninstalling removes the same data.
+        Settings has "Delete all data" to stop protection and clear saved profiles, face templates,
+        history and settings when deletion finishes successfully. Uninstalling removes app-private
+        data. Removing just one child keeps older history; use "Delete history" to clear it.
+        Exported CSVs, copies in cloud storage, original gallery photos and support emails remain
+        separate. Delete those at their destination, or contact us about correspondence we hold.
       </p>
 
-      <p><a href={url('/privacy')}>Privacy policy</a></p>
+      <h2>History exports</h2>
+      <p>
+        Android's file picker lets you choose where a CSV is saved, including available cloud
+        providers. The file can contain child names and activity details and is not encrypted by
+        CamLock. Keep it private and share only the rows needed for your purpose.
+      </p>
+
+      <h2>Contact and complaints</h2>
+      <OperatorDetails />
+      <p>
+        Send support requests, privacy enquiries or written complaints to{' '}
+        <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
+        Describe the issue and the outcome you are requesting. See the{' '}
+        <a href={url('/privacy')}>privacy policy</a> for how correspondence is handled.
+      </p>
     </div>
   </section>
 </Base>

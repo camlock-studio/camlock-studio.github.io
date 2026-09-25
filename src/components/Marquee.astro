@@ -61,7 +61,7 @@ const group = Array.from({ length: REPEAT }, () => items).flat();
   // (2840.06px here), so the loop's end position was 0.06px off the pixel grid of
   // its start: the glyphs rasterised slightly differently and shimmered at the
   // restart. Whole-pixel groups make the first and last frame the same pixels.
-  // Re-run when the web font arrives and on resize, since both change widths.
+  // Re-run when fonts are ready and on resize, since both can change widths.
   const snap = () => {
     document.querySelectorAll<HTMLElement>('.marquee .group').forEach((g) => {
       g.style.paddingRight = '0px';

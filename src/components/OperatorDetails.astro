@@ -1,0 +1,17 @@
+---
+import { SITE } from '../consts';
+const { legalName, address, registrationNumber } = SITE.operator;
+---
+
+{legalName && (
+  <div class="operator">
+    <p><strong>{legalName}</strong></p>
+    {address && <p>{address}</p>}
+    {registrationNumber && <p>Business registration number: {registrationNumber}</p>}
+  </div>
+)}
+
+<style>
+  .operator { margin-block: 1rem; }
+  .operator p { margin-bottom: 0.25rem; }
+</style>

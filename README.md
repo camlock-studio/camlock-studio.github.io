@@ -39,8 +39,7 @@ Every page style is scoped inside its `.astro` file. Only `src/styles/global.css
   Replace it with real device screenshots when the app is ready to be photographed.
 - **Motion.** Scroll reveals and the phone loop both use IntersectionObserver, pause off
   screen, and stop entirely under `prefers-reduced-motion`.
-- **Typography** is Inter, loaded from Google Fonts in `Base.astro`. Swap that link for
-  self-hosted files if you want the site to make no third-party requests.
+- **Typography** uses device/system fonts. No Google Fonts stylesheet or font-host request is made.
 
 ## Before publishing
 
@@ -54,8 +53,23 @@ Every page style is scoped inside its `.astro` file. Only `src/styles/global.css
 3. In the GitHub repository: Settings → Pages → Source → GitHub Actions.
 4. Have the privacy policy (`src/pages/privacy.astro`) reviewed. It describes what the app
    actually does, but it has not been checked by a lawyer, and Play requires a hosted policy URL.
-5. Re-check the claims if the app changes: the copy states under 5 seconds to lock, Android
-   8.0+, six children, a 90-day default event retention, and that nothing is transmitted.
+5. Fill `SITE.operator` only from the issued, reviewed Micky registry documents and agree the
+   legal identity/address/contact presentation before commercial publication. They are intentionally
+   empty in this local preparation; do not treat a successful build as completed legal identification.
+   Set the footer credit as appropriate once the operator is verified. No ID-card images or private
+   registration/tax records belong in this repository.
+6. Check the final app's handling before submitting Play Data safety: on-device processing and
+   optional CSV exports are different flows. A file saved through a cloud document provider can
+   leave the phone even though CamLock has no internet permission. The provisional Console draft
+   is in the separate app repository at `docs/play-console.md`.
+7. Re-check wording if behaviour changes: face templates are biometric measurements, history
+   exports can contain child names, removing a child does not clear older history, and app deletion
+   does not erase exports or gallery originals. Battery and call behaviour are not guaranteed.
+8. Review the support correspondence retention criteria, ordinary-support legal basis and provider
+   handling against the actual operation before publication. The current policy describes the
+   proposed support workflow, not a completed legal-compliance assessment.
+9. Publish only after review, then verify the actual public privacy/support URLs and app link.
+   Local changes are not an update to the hosted site until the deployment runs.
 
 ## Deploying elsewhere
 
