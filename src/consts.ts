@@ -3,7 +3,7 @@ export const SITE = {
   name: 'CamLock',
   tagline: 'The phone locks itself when your child picks it up.',
   description:
-    'Android app that recognises your children on the front camera and locks the phone to calls only. Face data stays on the device.',
+    'Android app that recognises your children on the front camera and locks the phone to calls only. Face data stays on-device.',
   /**
    * The Play listing. EMPTY UNTIL THE APP IS ACTUALLY PUBLISHED.
    *
