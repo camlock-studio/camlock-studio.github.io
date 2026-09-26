@@ -16,6 +16,8 @@ export const SITE = {
   supportEmail: 'camlock-studio@proton.me',
   /** Product credit until the issued business identity has been reviewed. */
   vendor: 'CamLock',
+  /** The studio behind CamLock. Linked from the footer credit. */
+  studio: { name: 'Micky', url: 'https://micky-site.pages.dev/' },
   /** Fill only from Micky's issued registry documents before commercial publication. */
   operator: {
     legalName: '',

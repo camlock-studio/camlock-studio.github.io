@@ -21,7 +21,10 @@ const year = new Date().getFullYear();
       padding and overhang the content edges by 24px each side. */}
   <div class="wrap">
     <div class="fine">
-      <p>© {year} {SITE.vendor}. A deterrent for shared family phones, not a tamper-proof lock.</p>
+      <p>
+        © {year} {SITE.vendor}. Built by <a href={SITE.studio.url}>{SITE.studio.name}</a>.
+        A deterrent for shared family phones, not a tamper-proof lock.
+      </p>
       <p>Android and Google Play are trademarks of Google LLC.</p>
     </div>
   </div>
@@ -51,4 +54,6 @@ const year = new Date().getFullYear();
     display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between;
   }
   .fine p { margin: 0; color: var(--dim); font-size: 0.8125rem; }
+  .fine a { color: var(--muted); }
+  .fine a:hover { color: var(--text); }
 </style>
