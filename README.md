@@ -35,7 +35,8 @@ Every page style is scoped inside its `.astro` file. Only `src/styles/global.css
   parent theme, so the teal accent carries the page. There is no light variant by design.
 - **`Phone.astro` is the product shot.** Four screens: enrolment, Home while armed and the
   lock screen are real renders captured from the app (`scripts/capture-app-screens.sh`), the
-  live check is drawn in CSS over a graded portrait (`scripts/make-phone-photos.py`).
+  live check is drawn in CSS over a graded portrait (`scripts/make-phone-photos.py`). The
+  portrait is a generated image made from the owner's own photograph, not a real child.
   `mode="loop"` cycles itself in the hero; `mode="scroll"` is driven by `Flow.astro` as the
   steps scroll past. Re-capture the renders when the app's screens change.
 - **Copy, 1 October 2026.** Plain descriptive headings and full sentences; no slogans,
