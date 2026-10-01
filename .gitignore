@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local assistant notes, not part of the public repository.
+CLAUDE.local.md

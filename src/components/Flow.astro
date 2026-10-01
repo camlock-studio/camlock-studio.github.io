@@ -1,11 +1,14 @@
 ---
 import Phone from './Phone.astro';
 
+// Step 3 is the prepared timing wording (pravno/predlosci/camlock-raspored-provjera.md,
+// "Short website paragraph", applied 1 October 2026 for WEB-05) with the typical
+// check length from the privacy policy appended. Keep it verbatim.
 const steps = [
-  { t: 'Enrol a face', b: 'A short scan, or a few gallery photos. Up to six children.' },
-  { t: 'Arm it once', b: 'A foreground service and a permanent notification. It survives app switching and the screen going off.' },
-  { t: 'It checks at handover', b: 'Screen on, after unlock, when another app opens. Roughly two and a half seconds each time.' },
-  { t: 'It locks. You unlock.', b: 'Calls-only screen for the child. Your fingerprint for you, and scanning pauses so you can hand it over on purpose.' },
+  { t: 'Enrol a child', b: 'A short scan with the front camera, or a few photos from your gallery. Up to six children.' },
+  { t: 'Turn protection on', b: 'CamLock runs as a foreground service with a permanent notification. It is meant to keep running while you switch apps or the screen goes off.' },
+  { t: 'CamLock checks the front camera', b: 'While protection is on, CamLock checks briefly after eligible screen, unlock and app-switch events, with follow-up and periodic checks. Timing settings and pauses control when checks run. App-switch checks normally wait five minutes after the last check, so handing over an already-unlocked phone may not be detected immediately. Each check typically takes about 2.5 seconds.' },
+  { t: 'The child sees a lock screen', b: 'Calls still work from it. Your fingerprint clears the lock, and checks pause so you can hand the phone over on purpose.' },
 ];
 ---
 
@@ -16,7 +19,7 @@ const steps = [
   <ol class="steps">
     {steps.map((s, i) => (
       <li class="step" data-step={i}>
-        <span class="n">{String(i + 1).padStart(2, '0')}</span>
+        <span class="n">{i + 1}</span>
         <h3>{s.t}</h3>
         <p>{s.b}</p>
         {/* Stacked, every step carries its own screen instead of sharing one
@@ -81,10 +84,9 @@ const steps = [
   }
   .n {
     display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.16em;
-    color: var(--brand);
-    margin-bottom: 0.65rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
     font-variant-numeric: tabular-nums;
   }
   .step h3 {
@@ -101,7 +103,9 @@ const steps = [
   @media (min-width: 56rem) {
     /* Dim what is not being read, so the pinned phone and the live step are
        obviously a pair. Only meaningful where one phone serves four steps. */
-    .step { padding-block: clamp(3rem, 9vh, 6rem); opacity: 0.38; transition: opacity 0.5s var(--ease); }
+    /* 0.75, not lower: the muted body text must keep 4.5:1 against the page
+       once the step is dimmed (0.38 took it to 2:1). */
+    .step { padding-block: clamp(3rem, 9vh, 6rem); opacity: 0.75; transition: opacity 0.5s var(--ease); }
     .step::before {
       content: '';
       position: absolute;

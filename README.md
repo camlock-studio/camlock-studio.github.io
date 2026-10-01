@@ -22,7 +22,7 @@ public/            static files copied as-is (favicon, robots.txt, .nojekyll)
 src/consts.ts      the strings that change at launch: Play URL, support email, dates
 src/styles/        global.css: the dark token set, buttons, cards, reveal utility
 src/layouts/       Base.astro: head, header, footer, the scroll-reveal observer
-src/components/    Header, Footer, Logo, Phone, Flow, Marquee, Contain
+src/components/    Header, Footer, Logo, Phone, Flow, StoreCta, OperatorDetails
 src/pages/         index, privacy, support, 404
 .github/workflows/ deploy.yml, which belongs at the repository root after the move
 ```
@@ -33,12 +33,24 @@ Every page style is scoped inside its `.astro` file. Only `src/styles/global.css
 
 - **Dark only.** The site borrows the child-facing lock screen's identity rather than the
   parent theme, so the teal accent carries the page. There is no light variant by design.
-- **`Phone.astro` is the product shot.** Four screens built in CSS — enrolment, Home while
-  armed, a live check, the lock screen — matching `docs/DESIGN.md`. `mode="loop"` cycles
-  itself in the hero; `mode="scroll"` is driven by `Flow.astro` as the steps scroll past.
-  Replace it with real device screenshots when the app is ready to be photographed.
+- **`Phone.astro` is the product shot.** Four screens: enrolment, Home while armed and the
+  lock screen are real renders captured from the app (`scripts/capture-app-screens.sh`), the
+  live check is drawn in CSS over a graded portrait (`scripts/make-phone-photos.py`).
+  `mode="loop"` cycles itself in the hero; `mode="scroll"` is driven by `Flow.astro` as the
+  steps scroll past. Re-capture the renders when the app's screens change.
+- **Copy, 1 October 2026.** Plain descriptive headings and full sentences; no slogans,
+  marquee, bento grid or decorative illustration. Step 3 of the flow carries the prepared
+  timing wording from `pravno/predlosci/camlock-raspored-provjera.md` verbatim (WEB-05).
+  Keep every qualifier: not tamper-proof, recognition can fail, battery and call behaviour
+  not guaranteed, no immediate-detection promise, exports can leave the phone.
 - **Motion.** Scroll reveals and the phone loop both use IntersectionObserver, pause off
-  screen, and stop entirely under `prefers-reduced-motion`.
+  screen, and stop entirely under `prefers-reduced-motion`. The reveal's hidden start state
+  is scoped to `@media (scripting: enabled)`, so without JavaScript the page is complete at
+  first paint.
+- **Security policy.** `Base.astro` emits a production-only `Content-Security-Policy` meta tag
+  (GitHub Pages cannot send headers). Nothing is inlined (`assetsInlineLimit: 0`); inline
+  `style` attributes remain allowed because `Phone.astro` positions screens through custom
+  properties. Any new external host must be added to the policy and to the privacy page.
 - **Typography** uses device/system fonts. No Google Fonts stylesheet or font-host request is made.
 
 ## Before publishing

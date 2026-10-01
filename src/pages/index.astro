@@ -2,62 +2,60 @@
 import Base from '../layouts/Base.astro';
 import Phone from '../components/Phone.astro';
 import Flow from '../components/Flow.astro';
-import Marquee from '../components/Marquee.astro';
-import Contain from '../components/Contain.astro';
 import StoreCta from '../components/StoreCta.astro';
 import { SITE, url } from '../consts';
 
-const bento = [
-  { t: 'Call controls on the lock screen', b: 'A Call button opens the dialler. CamLock is designed to stand aside when Android reports a ringing or active call.', span: 2, tone: 'hi' },
-  { t: 'Fingerprint only', b: 'Strong biometrics, with no PIN fallback inside CamLock.' },
-  { t: 'The app locks itself', b: 'Opening CamLock needs your fingerprint too.' },
-  { t: 'Your words', b: 'Write what the lock screen says, per child.' },
-  { t: 'Tracking only', b: 'Record who used the phone without locking it.' },
-  { t: 'Every lock, logged', b: 'Locks per day, time locked, per-child totals, CSV export.', span: 2 },
-  { t: 'Tamper alerts', b: 'Alerts when CamLock detects interrupted protection. Delivery depends on Android and notification access.' },
+const features = [
+  { t: 'Call button on the lock screen', b: 'A Call button opens the dialler. CamLock is designed to stand aside when Android reports a ringing or active call.' },
+  { t: 'Fingerprint unlock only', b: "Unlocking uses Android's strong biometrics. There is no PIN fallback inside CamLock." },
+  { t: 'CamLock itself needs your fingerprint', b: 'Opening the app asks for your fingerprint too.' },
+  { t: 'A message per child', b: 'You write what the lock screen says to each child.' },
+  { t: 'Tracking-only mode', b: 'Records who used the phone without locking it.' },
+  { t: 'Activity history', b: 'Locks per day, time locked and per-child totals, with CSV export to a destination you choose.' },
+  { t: 'Tamper alerts', b: 'CamLock alerts you when it detects that protection was interrupted. Delivery depends on Android and notification access.' },
+];
+
+const facts = [
+  { t: 'Processing', b: 'Face detection and matching run on the phone. The app has no internet permission.' },
+  { t: 'Face templates', b: 'Encrypted with an Android Keystore key. They are measurements, not photos.' },
+  { t: 'In the app', b: 'No account, ads, analytics or crash reporting.' },
+  { t: 'Exports', b: 'History goes where you choose to save it. A cloud destination can carry it off the phone.' },
 ];
 
 const limits = [
-  { t: 'Not tamper-proof', b: 'Any Android app can be force-stopped. CamLock can report an unexpected stop when it next runs.' },
-  { t: 'Not identity proof', b: 'Android accepts any enrolled fingerprint. A person who knows the device PIN may add another; keep device credentials private.' },
-  { t: 'Not self-starting', b: 'After a reboot, tap the reminder and authenticate. Protection can restart once its required access is ready.' },
+  { t: 'Force-stopping', b: 'Any Android app can be force-stopped. CamLock can report an unexpected stop when it next runs.' },
+  { t: 'Other fingerprints', b: 'Android accepts any enrolled fingerprint. A person who knows the device PIN may add another, so keep device credentials private.' },
+  { t: 'Reboots', b: 'After a reboot, tap the reminder and authenticate. Protection can restart once its required access is ready.' },
 ];
 
 const faqs = [
   { q: 'Does any face data leave the phone?', a: 'CamLock processes camera frames and face templates on the phone and does not upload them. Templates are encrypted biometric measurements, not saved photos. History is separate: you can export it to a destination you choose.' },
-  { q: 'What about other adults?', a: 'CamLock tries to match only the children you enrolled. Recognition can make mistakes, especially with similar faces; check it with your household and adjust the sensitivity if needed.' },
-  { q: 'Siblings who look alike?', a: 'Similar faces can be confused. Three sensitivity presets and additional samples help you adjust recognition, but reliable separation of siblings is not guaranteed.' },
+  { q: 'Does it lock for other adults?', a: 'CamLock tries to match only the children you enrolled. Recognition can make mistakes, especially with similar faces; check it with your household and adjust the sensitivity if needed.' },
+  { q: 'Can it tell siblings apart?', a: 'Similar faces can be confused. Three sensitivity presets and additional samples help you adjust recognition, but reliable separation of siblings is not guaranteed.' },
   { q: 'What does it cost in battery?', a: 'Each check briefly uses the front camera. Battery use depends on your phone, settings and how often checks run; we do not promise a fixed percentage.' },
-  { q: 'Which phones?', a: 'Android 8.0 and up, with a front camera and an enrolled fingerprint. It runs on the parent phone.' },
+  { q: 'Which phones does it run on?', a: 'Android 8.0 and up, with a front camera and an enrolled fingerprint. It runs on the parent phone.' },
 ];
+
+const live = SITE.playUrl.length > 0;
 ---
 
-<Base title={`${SITE.name} — Phone locks itself when your child picks it up`}>
-  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+<Base title={`${SITE.name} | Phone locks itself when your child picks it up`}>
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <h1 class="display lines reveal">
-          <span>They know the PIN.</span>
-          <em>The phone knows their face.</em>
-        </h1>
+        <h1 class="display reveal">CamLock locks your phone when it recognises your child</h1>
         <p class="lede reveal" style="--d:160ms">
-          CamLock recognises the kids you enrolled on the front camera and locks the
-          phone behind a calls-only screen. Your fingerprint is the way out.
+          CamLock uses the front camera to recognise the children you enrolled and shows a
+          calls-only lock screen. Your fingerprint unlocks it.
         </p>
         <div class="cta reveal" style="--d:240ms">
-          {/* While there is no store listing the badge cannot be the primary
-              action, so the one live action takes the primary slot and style. */}
-          {SITE.playUrl ? (
+          {live ? (
             <>
               <StoreCta />
-              <a class="btn btn-ghost" href="#how">Watch it work</a>
+              <a class="btn btn-ghost" href="#how">See how it works</a>
             </>
           ) : (
-            <>
-              <a class="btn btn-primary" href="#how">Watch it work</a>
-              <StoreCta />
-            </>
+            <a class="btn btn-primary" href="#how">See how it works</a>
           )}
         </div>
       </div>
@@ -67,64 +65,59 @@ const faqs = [
     </div>
   </section>
 
-  <Marquee />
-
-  <!-- ── How it works ─────────────────────────────────────────────── -->
   <section id="how">
     <div class="wrap">
       <header class="head reveal">
-        <p class="eyebrow">How it works</p>
-        <h2 class="lines"><span>Four steps.</span> <span>Then you forget it is there.</span></h2>
+        <h2>How it works</h2>
       </header>
       <Flow />
     </div>
   </section>
 
-  <!-- ── Features ─────────────────────────────────────────────────── -->
   <section id="features">
     <div class="wrap">
       <header class="head reveal">
-        <p class="eyebrow">What you get</p>
-        <h2>All of it, from the first launch.</h2>
-        <p class="lede">No tiers. No trial timer. Nothing to unlock later.</p>
+        <h2>Features</h2>
+        <p class="lede">Every feature is in the app from the start. Nothing is unlocked later.</p>
       </header>
-      <div class="bento">
-        {bento.map((c, i) => (
-          <article
-            class:list={['card', 'cell', 'reveal', c.span === 2 && 'wide', c.tone === 'hi' && 'hi']}
-            style={`--d:${i * 60}ms`}
-          >
-            <h3>{c.t}</h3>
-            <p>{c.b}</p>
-          </article>
+      <ul class="rows reveal">
+        {features.map((f) => (
+          <li class="row">
+            <h3>{f.t}</h3>
+            <p>{f.b}</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
-  <!-- ── Privacy ──────────────────────────────────────────────────── -->
   <section id="privacy" class="band">
     <div class="wrap privacy">
       <div class="reveal">
-        <p class="eyebrow">Privacy</p>
-        <h2>Face checks stay on your phone.</h2>
+        <h2>Face checks happen on the phone</h2>
         <p class="lede">
-          Face templates are encrypted and matched locally. No app account, ads or analytics.
-          You control history exports; copies saved elsewhere must be deleted separately.
+          Face templates are encrypted and matched on the phone. You choose where a history
+          export is saved. A cloud destination can carry it off the phone, and copies are yours
+          to delete.
         </p>
-        <p><a href={url('/privacy')}>Read the privacy policy →</a></p>
+        <p><a href={url('/privacy')}>Read the privacy policy</a></p>
       </div>
-      <div class="reveal" style="--d:120ms"><Contain /></div>
+      <dl class="facts reveal" style="--d:120ms">
+        {facts.map((f) => (
+          <div class="fact">
+            <dt>{f.t}</dt>
+            <dd>{f.b}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 
-  <!-- ── Honest limits ────────────────────────────────────────────── -->
-  <section>
+  <section id="limits">
     <div class="wrap">
       <header class="head reveal">
-        <p class="eyebrow">Honest limits</p>
-        <h2>What it cannot do.</h2>
-        <p class="lede">A deterrent that keeps a record, not a jail. Worth knowing before you buy.</p>
+        <h2>Limits</h2>
+        <p class="lede">CamLock is not a tamper-proof lock. Know these three limits before you rely on it.</p>
       </header>
       <div class="limits">
         {limits.map((l, i) => (
@@ -137,12 +130,10 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ── FAQ ──────────────────────────────────────────────────────── -->
   <section id="faq" class="band">
     <div class="wrap faqwrap">
       <header class="reveal">
-        <p class="eyebrow">FAQ</p>
-        <h2>Short answers.</h2>
+        <h2>Questions</h2>
       </header>
       <div class="faq reveal" style="--d:100ms">
         {faqs.map((f) => (
@@ -155,18 +146,24 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ── Final ────────────────────────────────────────────────────── -->
   <section id="get" class="final">
     <div class="wrap reveal">
-      <h2 class="lines"><span>Hand over the phone.</span> <span>Not everything on it.</span></h2>
-      <StoreCta />
-      <p class="fine">One purchase. Every feature. Face matching on your phone.</p>
+      {live ? (
+        <>
+          <h2>Get CamLock on Google Play</h2>
+          <StoreCta />
+        </>
+      ) : (
+        <h2>Coming to Google Play</h2>
+      )}
+      <p class="req">Android 8.0 or later, with a front camera and an enrolled fingerprint.</p>
+      <p class="fine">Face matching happens on your phone. See the <a href={url('/privacy')}>privacy policy</a>.</p>
     </div>
   </section>
 </Base>
 
 <style>
-  /* ── Hero ── */
+  /* Hero */
   .hero { padding-block: clamp(3rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem); }
   .hero-grid { display: grid; gap: 3rem; align-items: center; }
   @media (min-width: 58rem) {
@@ -206,49 +203,52 @@ const faqs = [
   @media (max-width: 47.99rem) {
     .hero-art :global(.phone) { width: 302px; zoom: 62%; }
   }
-
-  .display em {
-    font-style: normal;
-    background: linear-gradient(180deg, #d7f4fb, var(--brand) 85%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
   .cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
   @media (max-width: 30rem) {
     .cta { display: grid; }
   }
 
-  /* ── Section heads ── */
+  /* Section heads */
   .head { margin-bottom: clamp(2.5rem, 5vw, 4rem); max-width: 42rem; }
   .head .lede { margin-top: 1rem; }
   .band {
     background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.022) 18%, rgba(255, 255, 255, 0.022) 82%, transparent);
   }
 
-  /* ── Bento ── */
-  .bento { display: grid; gap: 0.9rem; grid-template-columns: 1fr; }
-  @media (min-width: 40rem) { .bento { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 62rem) { .bento { grid-template-columns: repeat(3, 1fr); } }
-  .cell { padding: 1.7rem; }
-  @media (min-width: 40rem) { .wide { grid-column: span 2; } }
-  .hi {
-    background:
-      radial-gradient(120% 140% at 0% 0%, rgba(36, 93, 107, 0.55), transparent 62%),
-      linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
-    border-color: var(--line);
+  /* Feature rows: title left, text right, hairlines between */
+  .rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); }
+  .row {
+    display: grid;
+    gap: 0.4rem 3rem;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--line-soft);
   }
-  .hi h3 { font-size: 1.35rem; letter-spacing: -0.025em; }
-  .hi p { font-size: 1rem; max-width: 34ch; }
+  @media (min-width: 48rem) { .row { grid-template-columns: minmax(0, 18rem) minmax(0, 36rem); } }
+  .row h3 { margin: 0; font-size: 1.0625rem; }
+  .row p { margin: 0; color: var(--muted); font-size: 0.975rem; line-height: 1.55; }
 
-  /* ── Limits ── */
+  /* Privacy facts */
+  .privacy { display: grid; gap: 3rem; align-items: start; }
+  @media (min-width: 56rem) { .privacy { grid-template-columns: 1.05fr 0.95fr; gap: 4rem; } }
+  .facts { margin: 0; border-top: 1px solid var(--line-soft); }
+  .fact {
+    display: grid;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  @media (min-width: 40rem) { .fact { grid-template-columns: 9rem minmax(0, 1fr); } }
+  .fact dt { font-weight: 600; font-size: 0.95rem; }
+  .fact dd { margin: 0; color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
+
+  /* Limits */
   .limits { display: grid; gap: 1.6rem; }
   @media (min-width: 52rem) { .limits { grid-template-columns: repeat(3, 1fr); gap: 2.4rem; } }
   .limit { border-top: 1px solid var(--line-soft); padding-top: 1.3rem; }
-  .limit h3 { color: var(--brand); margin-bottom: 0.5rem; }
+  .limit h3 { margin-bottom: 0.5rem; }
   .limit p { color: var(--muted); margin: 0; font-size: 0.95rem; }
 
-  /* ── FAQ ── */
+  /* FAQ */
   .faqwrap { display: grid; gap: 2rem; align-items: start; }
   @media (min-width: 56rem) { .faqwrap { grid-template-columns: 0.75fr 1.25fr; gap: 4rem; } }
   .faq details { border-bottom: 1px solid var(--line-soft); }
@@ -280,12 +280,10 @@ const faqs = [
   .faq details[open] summary::after { transform: rotate(225deg) translate(-2px, -2px); }
   .faq p { color: var(--muted); margin: -0.25rem 0 1.3rem; max-width: 58ch; font-size: 0.975rem; }
 
-  /* ── Privacy ── */
-  .privacy { display: grid; gap: 3rem; align-items: center; }
-  @media (min-width: 56rem) { .privacy { grid-template-columns: 1.05fr 0.95fr; gap: 4rem; } }
-
-  /* ── Final ── */
+  /* Final */
   .final { text-align: center; padding-bottom: clamp(5rem, 12vw, 9rem); }
-  .final h2 { margin-bottom: 2rem; }
-  .fine { color: var(--dim); font-size: 0.875rem; margin: 1.25rem 0 0; }
+  .final h2 { margin-bottom: 1.5rem; }
+  .req { color: var(--muted); margin: 0 auto 0.75rem; max-width: 40ch; }
+  .fine { color: var(--dim); font-size: 0.875rem; margin: 0; }
+  .fine a { color: var(--muted); }
 </style>

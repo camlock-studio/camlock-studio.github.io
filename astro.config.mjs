@@ -12,5 +12,11 @@ export default defineConfig({
   base: process.env.BASE_PATH ?? '/',
   trailingSlash: 'ignore',
   build: { format: 'directory' },
+  vite: {
+    // Nothing is inlined: hoisted component scripts and stylesheets stay as
+    // files, so the content-security policy in Base.astro needs no inline
+    // allowance for them.
+    build: { assetsInlineLimit: 0 },
+  },
   integrations: [sitemap()],
 });

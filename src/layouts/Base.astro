@@ -37,6 +37,16 @@ const ogImage = new URL(url('og-image.png'), Astro.site ?? 'https://example.com'
     <meta property="og:image:alt" content={`${SITE.name}: ${SITE.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
 
+    {/* GitHub Pages sends no custom response headers, so the policy travels in the
+        document. Production only: astro dev injects its toolbar and client scripts,
+        which the policy would block. Inline style attributes stay allowed because
+        Phone.astro positions its screens and landmarks through custom properties. */}
+    {import.meta.env.PROD && (
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'"
+      />
+    )}
     <!-- Cloudflare Web Analytics -->
     <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c5e14aba740c443b9835e461a07addac"}'></script>
   </head>
